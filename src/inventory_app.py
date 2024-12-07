@@ -151,8 +151,14 @@ class InventoryApp():
 			t.add_row([row[0], row[1], row[2], row[3]])
 		print(t)
 
-
-
-		
-
+def create_new_inventory(self):
+    """Allows the user to create a new inventory."""
+    name = input("Enter inventory name: ")
+    description = input("Enter inventory description: ")
+    
+    query = "INSERT INTO inventories (name, description) VALUES (%s, %s)"
+    self.cursor.execute(query, (name, description))
+    self.connection.commit()
+    
+    print(f"Inventory '{name}' created successfully!") 
 
