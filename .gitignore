@@ -1,0 +1,12 @@
+FinalProject_IT_566_1/
+# Stray MacOS files
+.DS_Store
+
+# directories
+logs
+
+# Virtual Environments
+.venv
+.pytest_cache
+
+
