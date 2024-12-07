@@ -68,9 +68,19 @@ class InventoryApp():
 	def new_inventory(self):
 		"""Create new inventory."""		
 		self.clear_screen()
-		if __debug__:
-			print('new_inventory() method called...')
-		input('\n\nThis method is not yet implemented. Press any key to continue: ')
+		try: 
+			name = input('Enter inventory name: ')
+			description = input('Enter inventory description:')
+			date = input('Enter inventory date: ')
+
+			inventory_id = self.business_logic.create_new_inventory(name, description, date)
+			if inventory_id: 
+				print(f"Inventory created with ID: {inventory_id}")
+			else: 
+				print("Failed to create inventory")
+		except Exception as e:
+			print(f"Exception in new_inventory() method: {e}")
+		input("\nPress any key to continue...")
 		
 
 	def list_inventories(self):
@@ -107,12 +117,6 @@ class InventoryApp():
 		except Exception as e:
 			print(f'Exception in select_inventory() method: {e}')
 			
-		
-
-		
-		
-		
-
 
 	def list_inventory_items(self):
 		"""List inventory items for inventory id contained in self.active_inventory_id field."""

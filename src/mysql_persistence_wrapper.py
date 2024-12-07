@@ -1,5 +1,6 @@
 """Implements a MySQL Persistence Wrapper"""
 
+from mysql.connector import connect, Error
 from persistence_wrapper_interface import PersistenceWrapperInterface
 from mysql import connector
 
@@ -22,7 +23,18 @@ class MySQLPersistenceWrapper(PersistenceWrapperInterface):
 
 		# Database Connection
 		self._db_connection = self._initialize_database_connection(self.DB_CONFIG)
-
+		print(f"DEBUG: Connection: {self._db_connection}, Cursor: {self.cursor}")
+	
+	def _initialize_database_connection(self):
+		try: 
+			print("Attempting to connect to the database...")
+			self._db_connection = connect(**self.DB_CONFIG)
+			self.cursor = self._db_connection.cursor(dictionary=True)
+			print("Database connection established.")
+		except Error as e: 
+			print(f'Database connection error: {e}')
+			self._db_connection = None
+			self.cursor = None
 
 	def get_all_inventories(self):
 		"""Returns a list of all rows in the inventories table"""
@@ -50,12 +62,28 @@ class MySQLPersistenceWrapper(PersistenceWrapperInterface):
 
 	def create_inventory(self, name: str, description: str, date: str):
 		"""Insert new row into inventories table."""
-		pass
+		try:
+			query = "INSERT INTO inventory (inventory_id, item, count) VALUES (%s, %s, %s)"
+			self.cursor.execute(query, (name, description, date))
+			self.connection.commit()
+			return self.cursor.lastrowid
+		except Exception as e:
+			print(f'Error: {e}')
 
 
 	def create_item(self, inventory_id: int, item: str, count: int):
 		"""Insert new row into items table for given inventory id"""
-		pass
+		try:
+			if not inventory_id: 
+				print('Error: inventory_id is none or invalid. ')
+				return None 
+			
+			query = "INSERT INTO items (inventory_id, item, count) VALUES (%s, %s, %s)"
+			self.cursor.execute(query, (inventory_id, item, count))
+			self.connection.commit()
+			return self.cursor.lastrowid
+		except Exception as e:
+			print(f'Error: {e}')
 		
 		
 	def _initialize_database_connection(self, config):

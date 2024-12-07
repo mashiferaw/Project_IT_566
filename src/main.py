@@ -1,5 +1,6 @@
 """Explicit main execution module."""
 from inventory_app import InventoryApp
+from business_logic import BusinessLogic
 #from datetime import date
 
 def main():
