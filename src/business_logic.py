@@ -58,11 +58,13 @@ class BusinessLogic():
 			return query_results
 		except Exception as e:
 			print(f'Exception in business logic: {e}')
+			results = ()
+			return results
 		
 
-	def add_item_to_inventory(self, inventory_id: int, name: str, quantity: int, price: float): 
+	def add_item_to_inventory(self, inventory_id: int, item: str, count: int): 
 		try: 
-			result = self._persistence_wrapper.add_item(inventory_id, name, quantity, price)
+			result = self._persistence_wrapper.create_item(inventory_id, item, count)
 			return result
 		except Exception as e: 
 			print(f"Error in add_item_to_inventory: {e}")
