@@ -68,19 +68,14 @@ class InventoryApp():
 	def new_inventory(self):
 		"""Create new inventory."""		
 		self.clear_screen()
-		try: 
-			name = input('Enter inventory name: ')
-			description = input('Enter inventory description:')
-			date = input('Enter inventory date: ')
+		if __debug__:
+			print('new_inventory() method called...')
+		Inventory_Name = input('Name the inventory: ')
+		Inventory_Description = input('Description the inventory: ')
+		Inventory_Date = input('Current Inventory Date: ')
+		self.business_logic.create_new_inventory(Inventory_Name,Inventory_Description,Inventory_Date)
+		input('\n\nPress any key to continue...')
 
-			inventory_id = self.business_logic.create_new_inventory(name, description, date)
-			if inventory_id: 
-				print(f"Inventory created with ID: {inventory_id}")
-			else: 
-				print("Failed to create inventory")
-		except Exception as e:
-			print(f"Exception in new_inventory() method: {e}")
-		input("\nPress any key to continue...")
 		
 
 	def list_inventories(self):
@@ -116,7 +111,6 @@ class InventoryApp():
 					keep_going = False
 		except Exception as e:
 			print(f'Exception in select_inventory() method: {e}')
-			
 
 	def list_inventory_items(self):
 		"""List inventory items for inventory id contained in self.active_inventory_id field."""
@@ -145,24 +139,22 @@ class InventoryApp():
 					
 	def print_inventory_list(self, inv_list):
 		t = PrettyTable(['ID', 'Name', 'Description'])
-		for row in inv_list:
-			t.add_row([row[0], row[1], row[2]])
-		print(t)
+		if inv_list is None: 
+			print("No inventories found.")
+		else: 
+			for row in inv_list:
+				t.add_row([row[0], row[1], row[2]])
+				print(t)
 
 	def print_items_list(self, items_list):
 		t = PrettyTable(['ID', 'Inventory ID', 'Item', 'Count'])
-		for row in items_list:
-			t.add_row([row[0], row[1], row[2], row[3]])
-		print(t)
+		if items_list is None: 
+			print("No Items found.")
+		else: 
+			for row in items_list:
+				t.add_row([row[0], row[1], row[2], row[3]])
+				print(t)
 
-def create_new_inventory(self):
-    """Allows the user to create a new inventory."""
-    name = input("Enter inventory name: ")
-    description = input("Enter inventory description: ")
-    
-    query = "INSERT INTO inventories (name, description) VALUES (%s, %s)"
-    self.cursor.execute(query, (name, description))
-    self.connection.commit()
-    
-    print(f"Inventory '{name}' created successfully!") 
 
+
+		
